@@ -1,10 +1,12 @@
 
-import pandas as pd
 import json
-import RuleBasedModels
-import epitran
-import random
 import pickle
+import random
+
+import epitran
+import pandas as pd
+
+import RuleBasedModels
 
 
 class TextDataset():
@@ -79,3 +81,21 @@ def getSentenceCategory(sentence) -> int:
     for category in range(len(categories_word_limits)-1):
         if number_of_words > categories_word_limits[category] and number_of_words <= categories_word_limits[category+1]:
             return category+1
+
+def custom_handler(event, context):
+    body = json.loads(event['body'])
+    sentence = body['sentence']
+    language = body['language']
+
+    if language not in available_languages:
+        return json.dumps({'error': 'Language not supported'})
+
+    current_transcript = [sentence]
+    current_ipa = lambda_ipa_converter[language].convertToPhonem(sentence)
+    translated_trascript = ""
+
+    result = {'real_transcript': current_transcript,
+              'ipa_transcript': current_ipa,
+              'transcript_translation': translated_trascript}
+
+    return json.dumps(result)
