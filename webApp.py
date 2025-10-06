@@ -34,6 +34,10 @@ def getNext():
     event = {'body':  json.dumps(request.get_json(force=True))}
     return lambdaGetSample.lambda_handler(event, [])
 
+@app.route(rootPath+'/pinyin', methods=['POST'])
+def custom_handler():
+    event = {'body': json.dumps(request.get_json(force=True))}
+    return lambdaGetSample.custom_handler(event, [])
 
 @app.route(rootPath+'/GetAccuracyFromRecordedAudio', methods=['POST'])
 def GetAccuracyFromRecordedAudio():
