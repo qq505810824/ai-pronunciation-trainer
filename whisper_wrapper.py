@@ -1,12 +1,15 @@
-import torch 
-from transformers import pipeline
-from ModelInterfaces import IASRModel
 from typing import Union
-import numpy as np 
+
+import numpy as np
+import torch
+from transformers import pipeline
+
+from ModelInterfaces import IASRModel
+
 
 class WhisperASRModel(IASRModel):
     def __init__(self, model_name="openai/whisper-base"):
-       self.asr = pipeline("automatic-speech-recognition", device='cpu',model=model_name, return_timestamps="word")
+        self.asr = pipeline("automatic-speech-recognition", device='cpu',model=model_name, return_timestamps="word")
         # self.asr = pipeline("automatic-speech-recognition", device=0,model=model_name, return_timestamps="word")
         self._transcript = ""
         self._word_locations = []
